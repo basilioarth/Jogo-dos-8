@@ -1,3 +1,5 @@
+import { collapseTextChangeRangesAcrossMultipleVersions } from "typescript";
+
 export default class Node {
 
     parent: Node | null = null;
@@ -103,6 +105,15 @@ export default class Node {
 
     }
 
+    manhattan(): number {
+        let m = 0;
+        for (let i = 0; i < this.puzzle.length; i++) {
+            m += Math.abs(Math.floor(i / this.col) - Math.floor(this.goal.indexOf(this.puzzle[i]) / this.col)) + Math.abs((i % this.col) - (this.goal.indexOf(this.puzzle[i]) % this.col));
+        }
+        return m;
+
+    }
+
     hamming(): number {
         let h = 0;
         for (let i = 0; i < this.puzzle.length; i++) {
@@ -114,7 +125,16 @@ export default class Node {
     }
 
     calcFScore(): number {
-        this.fScore = this.hamming() + this.level;
+        this.fScore = this.manhattan() + this.level;
         return this.fScore;
+    }
+
+    isEqual(n: Node): boolean {
+        for (let i = 0; i < this.puzzle.length; i++) {
+            if (this.puzzle[i] != n.puzzle[i]) {
+                return false;
+            }
+        }
+        return true;
     }
 }
