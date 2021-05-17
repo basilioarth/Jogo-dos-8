@@ -3,6 +3,8 @@ import Board from "../../algorithms/models/Board";
 import Node from "../../algorithms/models/Node";
 import { Result } from "../../algorithms/models/result";
 
+const algoritmos = ["Busca cega - largura", "Busca cega - profundidade", "Busca heurística", "A*"];
+
 const Main = () => {
 
     // let board = new Board([4, 1, 2, 0, 5, 3, 6, 7, 8]);
@@ -11,8 +13,13 @@ const Main = () => {
     // let board = new Board([1, 2, 3, 4, 7, 5, 6, 8, 0]);
     // let board = new Board([0, 1, 2, 4, 5, 3, 6, 7, 8]);
 
-    const [solucoes, setSolucoes] = useState<Result[]>([]);
-    const [value, setValue] = useState<string>('');
+    /**
+     * 4-1-2-0-5-3-6-7-8
+     * 0-1-2-4-5-3-6-7-8
+     */
+
+    const [solucoes, setSolucoes] = useState<any>([]);
+    const [value, setValue] = useState<string>('4-1-2-0-5-3-6-7-8');
     const [algoritmo, setAlgoritmo] = useState<string>("0");
 
     const castInput = () => value?.split('-').map(v => parseInt(v));
@@ -24,7 +31,13 @@ const Main = () => {
         }
 
         let board = new Board(castInput());
-        setSolucoes(arr => [...arr, board.search(parseInt(algoritmo))]);
+        setSolucoes([
+            ...solucoes,
+            {
+                board: board.search(parseInt(algoritmo)),
+                algoritmo,
+            }
+        ]);
     }
 
     useEffect(() => {
@@ -34,9 +47,9 @@ const Main = () => {
     return (
         <div>
             <div>
-                <h3>Insira o estado inicial, da esquerda para direita, do topo para baixo, 10 números separados por -, onde o "0" representa o campo em branco.</h3>
+                <h3>Insira o estado inicial, da esquerda para direita, do topo para baixo, 9 números separados por -, onde o "0" representa o campo em branco.</h3>
                 <div>
-                    <input value={value} onChange={(e) => setValue(e.target.value)} type="text" pattern="\d+" maxLength={17} />
+                    <input value={value} onChange={(e) => setValue(e.target.value.replace(/[^0-8-]/g, ""))} type="text" pattern="\d+" maxLength={17} />
                     <select style={{
                         margin: 10
                     }} name="algoritmos" id="algoritmos" defaultValue={algoritmo} onChange={(e) => setAlgoritmo(e.target.value)}>
@@ -52,55 +65,67 @@ const Main = () => {
                         margin: 5
                     }} onClick={() => setSolucoes([])}>Limpar</button>
                 </div>
+                <span><strong>Recadinhos da paróquia:</strong> o limite de iterações para busca em profundidade é igual a 100!</span>
             </div>
 
             {
-                solucoes.map(solucao => (
-                    solucao?.path.length > 0 ?
-                        solucao?.path.map((node: Node) => (
-                            <div style={{
-                                border: '2px solid #000',
-                                margin: 5,
-                                display: 'flex',
-                                maxWidth: 50,
-                                padding: 5,
-                                flexDirection: 'column',
-                                alignItems: 'center'
-                            }}>
+                solucoes.map((solucao: any) => (
+                    <div style={{
+                        border: '2px solid #ccc',
+                        margin: 5,
+                        padding: 8
+                    }}>
+                        <h3>{algoritmos[parseInt(solucao.algoritmo)]} </h3>
+                    {
+                    solucao?.board.path.length > 0 ?
+                        solucao?.board.path.map((node: Node) => (
                                 <div style={{
+                                    border: '2px solid #000',
+                                    margin: 5,
                                     display: 'flex',
-                                    flexDirection: 'row',
-                                    justifyContent: 'space-between',
-                                    width: '100%'
+                                    maxWidth: 50,
+                                    padding: 5,
+                                    flexDirection: 'column',
+                                    alignItems: 'center'
                                 }}>
-                                    <span>{node.puzzle[0]}</span>
-                                    <span>{node.puzzle[1]}</span>
-                                    <span>{node.puzzle[2]}</span>
+                                    <div style={{
+                                        display: 'flex',
+                                        flexDirection: 'row',
+                                        justifyContent: 'space-between',
+                                        width: '100%'
+                                    }}>
+                                        <span>{node.puzzle[0]}</span>
+                                        <span>{node.puzzle[1]}</span>
+                                        <span>{node.puzzle[2]}</span>
+                                    </div>
+                                    <div style={{
+                                        display: 'flex',
+                                        flexDirection: 'row',
+                                        justifyContent: 'space-between',
+                                        width: '100%'
+                                    }}>
+                                        <span>{node.puzzle[3]}</span>
+                                        <span>{node.puzzle[4]}</span>
+                                        <span>{node.puzzle[5]}</span>
+                                    </div>
+                                    <div style={{
+                                        display: 'flex',
+                                        flexDirection: 'row',
+                                        justifyContent: 'space-between',
+                                        width: '100%'
+                                    }}>
+                                        <span>{node.puzzle[6]}</span>
+                                        <span>{node.puzzle[7]}</span>
+                                        <span>{node.puzzle[8]}</span>
+                                    </div>
                                 </div>
-                                <div style={{
-                                    display: 'flex',
-                                    flexDirection: 'row',
-                                    justifyContent: 'space-between',
-                                    width: '100%'
-                                }}>
-                                    <span>{node.puzzle[3]}</span>
-                                    <span>{node.puzzle[4]}</span>
-                                    <span>{node.puzzle[5]}</span>
-                                </div>
-                                <div style={{
-                                    display: 'flex',
-                                    flexDirection: 'row',
-                                    justifyContent: 'space-between',
-                                    width: '100%'
-                                }}>
-                                    <span>{node.puzzle[6]}</span>
-                                    <span>{node.puzzle[7]}</span>
-                                    <span>{node.puzzle[8]}</span>
-                                </div>
-                            </div>
                         ))
-                    : <h2></h2>
-                    ))
+                        : <h2></h2>
+                     }
+                     <h4>Custo de memória: { solucao.board.custoMemoria }</h4>
+                    <h4>Custo de tempo: { solucao.board.custoTempo }</h4>
+                    </div>
+                ))
             }
         </div>
     )

@@ -30,11 +30,16 @@ export const buscaLargura = (root: Node): Result => {
 
         for (let i = 0; i < currentNode.children.length; i++) {
 
-            currentNode.children[i].calcFScore();
             let adiciona = true;
 
             for (let j = 0; j < expandedNodes.length; j++) {
                 if (expandedNodes[j].isEqual(currentNode.children[i])) {
+                    adiciona = false;
+                    break;
+                }
+            }
+            for (let j = 0; j < frontier.length; j++) {
+                if (frontier[j].isEqual(currentNode.children[i])) {
                     adiciona = false;
                     break;
                 }

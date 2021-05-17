@@ -27,8 +27,9 @@ export default class Node {
         })
 
         if (x != null) {
-            this.moveToRight(this.puzzle, x);
+        
             this.moveToLeft(this.puzzle, x);
+            this.moveToRight(this.puzzle, x);
             this.moveToUp(this.puzzle, x);
             this.moveToDown(this.puzzle, x);
         }

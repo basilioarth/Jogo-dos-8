@@ -1,6 +1,7 @@
 import { Result } from './result';
 import Node from './Node';
 import { buscaLargura } from '../busca-largura';
+import { buscaProfundidade } from '../busca-profundidade';
 import aEstrela from '../a-estrela';
 
 export default class Board {
@@ -24,7 +25,7 @@ export default class Board {
             case 0:
                 return buscaLargura(this.initialNode);
             case 1:
-                return {path: [], custoMemoria: 0, custoTempo: 0}
+                return buscaProfundidade(this.initialNode);
             case 3:
                 return aEstrela(this.initialNode);
             default:
