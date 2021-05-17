@@ -1,11 +1,12 @@
+import { Result } from './models/result';
 import Node from "./models/Node";
 
-export const buscaLargura = (root: Node): Node[] => {
-    let pathSolution: Node[] = [];
+export const buscaLargura = (root: Node): Result => {
     let frontier: Node[] = [];
     let expandedNodes: Node[] = [];
-    let expandedNodesCount: number = 1;
+    let custoTempo: number = 1;
     let custoMemoria: number = 0;
+    let currentNode: Node = root;
 
     frontier.push(root);
     let goalFound: boolean = false;
@@ -14,43 +15,50 @@ export const buscaLargura = (root: Node): Node[] => {
 
         if(frontier.length > custoMemoria) custoMemoria = frontier.length;
 
-        let currentNode = frontier[0];
+        custoTempo++;
+
+        currentNode = frontier[0];
         expandedNodes.push(currentNode);
         frontier.shift();
 
+        if (currentNode.isGoal()){
+            goalFound = true;
+            break;
+        }
+
         currentNode.expandNode();
 
-        console.log(currentNode.children);
+        for (let i = 0; i < currentNode.children.length; i++) {
 
-        currentNode.children.map(child => {
-            expandedNodesCount++;
+            currentNode.children[i].calcFScore();
+            let adiciona = true;
 
-            
-            if(child.isGoal()) {
-                goalFound = true;
-                pathTrace(pathSolution, child);
-                return;
+            for (let j = 0; j < expandedNodes.length; j++) {
+                if (expandedNodes[j].isEqual(currentNode.children[i])) {
+                    adiciona = false;
+                    break;
+                }
             }
-
-            if(!frontier.includes(child) && !expandedNodes.includes(child)) {
-                frontier.push(child);
+            if (adiciona) {
+                frontier.push(currentNode.children[i]);
             }
-        });
+        }
     }
 
-    return pathSolution;
-}
+    let path: Node[] = [];
 
-const pathTrace = (path: Node[], node: Node) => {
+    while (currentNode.parent != null) {
+        path.push(currentNode);
+        currentNode = currentNode.parent;
+    }
+    path.push(currentNode);
 
-    let current = node;
-    path.push(current);
+    path = path.reverse();
 
-    // console.log(path);
-
-    while(current.parent) {
-        current = current.parent;
-        path.push(current);
+    return {
+        path,
+        custoTempo,
+        custoMemoria
     }
 }
 

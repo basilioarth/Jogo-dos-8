@@ -1,23 +1,106 @@
 import { useEffect, useState } from "react";
 import Board from "../../algorithms/models/Board";
 import Node from "../../algorithms/models/Node";
+import { Result } from "../../algorithms/models/result";
 
 const Main = () => {
 
-    let board = new Board([4, 1, 2, 0, 5, 3, 6, 7, 8]);
+    // let board = new Board([4, 1, 2, 0, 5, 3, 6, 7, 8]);
+    // let board = new Board([0, 7, 2, 1, 4, 3, 6, 8, 5]);
+    // let board = new Board([1, 2, 3, 0, 4, 6, 7, 5, 8]);
+    // let board = new Board([1, 2, 3, 4, 7, 5, 6, 8, 0]);
+    // let board = new Board([0, 1, 2, 4, 5, 3, 6, 7, 8]);
 
-    const [solucao, setSolucao] = useState<Node[]>([]);
+    const [solucoes, setSolucoes] = useState<Result[]>([]);
+    const [value, setValue] = useState<string>('');
+    const [algoritmo, setAlgoritmo] = useState<string>("0");
+
+    const castInput = () => value?.split('-').map(v => parseInt(v));
+
+    const handleButton = () => {
+        if (value.length < 17) {
+            alert('Insira o valor inicial corretamente!');
+            return;
+        }
+
+        let board = new Board(castInput());
+        setSolucoes(arr => [...arr, board.search(parseInt(algoritmo))]);
+    }
 
     useEffect(() => {
-       setSolucao(board.search(0) || []);
+        // setSolucao(board.search(0) || []);
     }, [])
 
     return (
         <div>
+            <div>
+                <h3>Insira o estado inicial, da esquerda para direita, do topo para baixo, 10 números separados por -, onde o "0" representa o campo em branco.</h3>
+                <div>
+                    <input value={value} onChange={(e) => setValue(e.target.value)} type="text" pattern="\d+" maxLength={17} />
+                    <select style={{
+                        margin: 10
+                    }} name="algoritmos" id="algoritmos" defaultValue={algoritmo} onChange={(e) => setAlgoritmo(e.target.value)}>
+                        <option value="0">Busca cega - largura</option>
+                        <option value="1">Busca cega - profundidade</option>
+                        <option value="2">Busca heurística</option>
+                        <option value="3">A*</option>
+                    </select>
+                    <button style={{
+                        margin: 5
+                    }} onClick={handleButton}>Solucionar</button>
+                    <button style={{
+                        margin: 5
+                    }} onClick={() => setSolucoes([])}>Limpar</button>
+                </div>
+            </div>
+
             {
-                solucao.length > 0 ? 
-                solucao.map((node: Node) => <h2>{ node.puzzle }</h2>)
-                : <h2>Não possui solução</h2>
+                solucoes.map(solucao => (
+                    solucao?.path.length > 0 ?
+                        solucao?.path.map((node: Node) => (
+                            <div style={{
+                                border: '2px solid #000',
+                                margin: 5,
+                                display: 'flex',
+                                maxWidth: 50,
+                                padding: 5,
+                                flexDirection: 'column',
+                                alignItems: 'center'
+                            }}>
+                                <div style={{
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-between',
+                                    width: '100%'
+                                }}>
+                                    <span>{node.puzzle[0]}</span>
+                                    <span>{node.puzzle[1]}</span>
+                                    <span>{node.puzzle[2]}</span>
+                                </div>
+                                <div style={{
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-between',
+                                    width: '100%'
+                                }}>
+                                    <span>{node.puzzle[3]}</span>
+                                    <span>{node.puzzle[4]}</span>
+                                    <span>{node.puzzle[5]}</span>
+                                </div>
+                                <div style={{
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-between',
+                                    width: '100%'
+                                }}>
+                                    <span>{node.puzzle[6]}</span>
+                                    <span>{node.puzzle[7]}</span>
+                                    <span>{node.puzzle[8]}</span>
+                                </div>
+                            </div>
+                        ))
+                    : <h2></h2>
+                    ))
             }
         </div>
     )

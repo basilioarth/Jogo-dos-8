@@ -1,5 +1,7 @@
+import { Result } from './result';
 import Node from './Node';
 import { buscaLargura } from '../busca-largura';
+import aEstrela from '../a-estrela';
 
 export default class Board {
 
@@ -8,21 +10,25 @@ export default class Board {
     constructor(
         private initialPuzzle: number[]
     ) {
-        this.initialNode = new Node(this.initialPuzzle);
+        this.initialNode = new Node(this.initialPuzzle, 0, 0);
     }
-    
-    search(type: number): Node[] | undefined{
 
-        console.log(this.temSolucao());
-        return undefined;
+    search(type: number): Result {
 
-        if (!this.temSolucao()) return undefined;
+        // console.log(this.temSolucao());
+        // return undefined;
+
+        // if (!this.temSolucao()) return undefined;
 
         switch (type) {
             case 0:
-                return buscaLargura(this.initialNode);        
+                return buscaLargura(this.initialNode);
+            case 1:
+                return {path: [], custoMemoria: 0, custoTempo: 0}
+            case 3:
+                return aEstrela(this.initialNode);
             default:
-                break;
+                return {path: [], custoMemoria: 0, custoTempo: 0}
         }
 
     }
@@ -34,7 +40,7 @@ export default class Board {
     temSolucao(): boolean {
         let inversoes = this.getInversoes();
         console.log(inversoes);
-        return (inversoes % 2 == 0);
+        return (inversoes % 2 === 0);
     }
 
     getInversoes(): number {
@@ -45,14 +51,14 @@ export default class Board {
         arr.push(this.initialPuzzle.slice(3, 6));
         arr.push(this.initialPuzzle.slice(6, 9));
 
-        for(let i=0;i<2;i++){
-            for(let j=i+1;j<3;j++){
+        for (let i = 0; i < 2; i++) {
+            for (let j = i + 1; j < 3; j++) {
                 if (arr[j][i] > 0 && arr[j][i] > arr[i][j]) {
                     console.log(arr[j][i], arr[i][j])
                     inversoes += 1;
                 }
             }
-         }
+        }
         return inversoes;
     }
 
@@ -68,7 +74,7 @@ export default class Board {
      * @param board
      * @returns número de tiles estão na posição errada
      */
-    hamming(board: number[][]): number {
+    hamming(board: number[]): number {
         return 0;
     }
 
@@ -84,18 +90,18 @@ export default class Board {
 
 /**
  * mocks
- * 
+ *
  * estado inicial: [[1, 2, 5], [3, 4, 0], [6, 7, 8]]
- * 
- * filhos: 
+ *
+ * filhos:
  *  [[1, 2, 0], [3, 4, 5], [6, 7, 8]],  UP
  *  [[1, 2, 5], [3, 4, 8], [6, 7, 0]],  DOWN
  *  [[1, 2, 5], [3, 0, 4], [6, 7, 8]],  LEFT
- * 
+ *
  * primeiro passo: [[1, 2, 0], [3, 4, 5], [6, 7, 8]],  UP
- * 
+ *
  * filhos:
  *  [[1, 0, 2], [3, 4, 5], [6, 7, 8]],  UP
- * 
+ *
  * segundo passo: [[1, 0, 2], [3, 4, 5], [6, 7, 8]],  UP
  */
