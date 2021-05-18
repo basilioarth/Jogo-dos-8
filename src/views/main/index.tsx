@@ -108,7 +108,10 @@ const Main = () => {
                         : <h2></h2>
                      }
                      <h4>Custo de memória: { solucao.board.custoMemoria }</h4>
-                    <h4>Custo de tempo: { solucao.board.custoTempo }</h4>
+                     <h4>Custo de tempo: { solucao.board.custoTempo }</h4>
+                     <h4>Nós gerados: { solucao.board.nosGerados }</h4>
+                     <h4>Profundidade da solução: { solucao.board.profundidade }</h4>
+                     <h4>Profundidade máxima: { solucao.board.profundidadeMaxima }</h4>
                     </div>
                 ))
             }

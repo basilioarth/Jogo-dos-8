@@ -11,7 +11,10 @@ const search = (type: number, initialPuzzle: number[]): Result => {
     if (!temSolucao(initialPuzzle)) return {
         path: [],
         custoMemoria: 0,
-        custoTempo: 0
+        custoTempo: 0,
+        nosGerados: 0,
+        profundidade: 0,
+        profundidadeMaxima: 0
     }
 
     switch (type) {
@@ -24,7 +27,7 @@ const search = (type: number, initialPuzzle: number[]): Result => {
         case 3:
             return aEstrela(initialNode);
         default:
-            return {path: [], custoMemoria: 0, custoTempo: 0}
+            return {path: [], custoMemoria: 0, custoTempo: 0, nosGerados: 0, profundidade: 0, profundidadeMaxima: 0}
     }
 };
 

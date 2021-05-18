@@ -8,7 +8,11 @@ const aEstrela = (root: Node): Result => {
     let current: Node = root;
     let custoMemoria = 1;
     let custoTempo = 0;
+    let nosGerados = 0;
+    let profundidade = 0;
+    let profundidadeMaxima = 0;
 
+    
     root.calcFScore();
     open.push(root);
 
@@ -61,6 +65,15 @@ const aEstrela = (root: Node): Result => {
     }
 
     let path: Node[] = [];
+    nosGerados = closed.length + open.length;
+    profundidade = current.level;
+    
+    open.map((node: Node) => {
+        if (node.level > profundidadeMaxima) profundidadeMaxima = node.level;
+    })
+    closed.map((node: Node) => {
+        if (node.level > profundidadeMaxima) profundidadeMaxima = node.level;
+    })
 
     while (current.parent != null) {
         path.push(current);
@@ -73,7 +86,10 @@ const aEstrela = (root: Node): Result => {
     return {
         path,
         custoTempo,
-        custoMemoria
+        custoMemoria,
+        nosGerados,
+        profundidade,
+        profundidadeMaxima
     }
 }
 

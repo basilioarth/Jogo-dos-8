@@ -7,6 +7,9 @@ export const buscaLargura = (root: Node): Result => {
     let custoTempo: number = 1;
     let custoMemoria: number = 0;
     let current: Node = root;
+    let nosGerados = 0;
+    let profundidade = 0;
+    let profundidadeMaxima = 0;
 
     open.push(root);
     let goalFound: boolean = false;
@@ -51,6 +54,15 @@ export const buscaLargura = (root: Node): Result => {
     }
 
     let path: Node[] = [];
+    nosGerados = open.length + closed.length;
+    profundidade = current.level;
+
+    open.map((node: Node) => {
+        if (node.level > profundidadeMaxima) profundidadeMaxima = node.level;
+    })
+    closed.map((node: Node) => {
+        if (node.level > profundidadeMaxima) profundidadeMaxima = node.level;
+    })
 
     while (current.parent != null) {
         path.push(current);
@@ -63,7 +75,10 @@ export const buscaLargura = (root: Node): Result => {
     return {
         path,
         custoTempo,
-        custoMemoria
+        custoMemoria,
+        nosGerados,
+        profundidade,
+        profundidadeMaxima
     }
 }
 

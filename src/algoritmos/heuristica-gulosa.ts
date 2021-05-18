@@ -8,6 +8,9 @@ export const heuristicaGulosa = (root: Node): Result => {
     let custoMemoria: number = 0;
     let current: Node = root;
     let limit = 99;
+    let nosGerados = 0;
+    let profundidade = 0;
+    let profundidadeMaxima = 0;
 
     open.push(root);
     let goalFound: boolean = false;
@@ -58,6 +61,15 @@ export const heuristicaGulosa = (root: Node): Result => {
     }
 
     let path: Node[] = [];
+    nosGerados = closed.length + open.length;
+    profundidade = current.level;
+
+    open.map((node: Node) => {
+        if (node.level > profundidadeMaxima) profundidadeMaxima = node.level;
+    })
+    closed.map((node: Node) => {
+        if (node.level > profundidadeMaxima) profundidadeMaxima = node.level;
+    })
 
     while (current.parent != null) {
         path.push(current);
@@ -70,7 +82,10 @@ export const heuristicaGulosa = (root: Node): Result => {
     return {
         path,
         custoTempo,
-        custoMemoria
+        custoMemoria,
+        nosGerados,
+        profundidade,
+        profundidadeMaxima
     }
 }
 
