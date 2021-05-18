@@ -3,6 +3,7 @@ import Node from './Node';
 import { buscaLargura } from '../busca-largura';
 import { buscaProfundidade } from '../busca-profundidade';
 import aEstrela from '../a-estrela';
+import heuristicaGulosa from '../heuristica-gulosa';
 
 export default class Board {
 
@@ -29,7 +30,7 @@ export default class Board {
             case 3:
                 return aEstrela(this.initialNode);
             default:
-                return {path: [], custoMemoria: 0, custoTempo: 0}
+                return heuristicaGulosa(this.initialNode);
         }
 
     }
@@ -70,14 +71,6 @@ export default class Board {
     // verificaObjetivo(board: number[][]): boolean {
     //     return board === this.objetivo;
     // }
-
-    /**
-     * @param board
-     * @returns número de tiles estão na posição errada
-     */
-    hamming(board: number[]): number {
-        return 0;
-    }
 
     /**
      * @param board 

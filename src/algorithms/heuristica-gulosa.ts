@@ -1,7 +1,7 @@
 import { Result } from './models/result';
 import Node from "./models/Node";
 
-export const buscaProfundidade = (root: Node): Result => {
+export const heuristicaGulosa = (root: Node): Result => {
     let frontier: Node[] = [];
     let expandedNodes: Node[] = [];
     let custoTempo: number = 1;
@@ -32,6 +32,7 @@ export const buscaProfundidade = (root: Node): Result => {
 
         for (let i = 0; i < currentNode.children.length; i++) {
 
+            currentNode.children[i].calcFScoreGreedy()
             let adiciona = true;
 
             for (let j = 0; j < expandedNodes.length; j++) {
@@ -50,6 +51,10 @@ export const buscaProfundidade = (root: Node): Result => {
                 frontier.push(currentNode.children[i]);
             }
         }
+
+        frontier.sort((a, b) => {
+            return a.fScore - b.fScore;
+        })
     }
 
     let path: Node[] = [];
@@ -69,4 +74,4 @@ export const buscaProfundidade = (root: Node): Result => {
     }
 }
 
-export default buscaProfundidade;
+export default heuristicaGulosa;

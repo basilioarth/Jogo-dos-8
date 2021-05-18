@@ -114,18 +114,13 @@ export default class Node {
 
     }
 
-    hamming(): number {
-        let h = 0;
-        for (let i = 0; i < this.puzzle.length; i++) {
-            if (this.puzzle[i] !== this.goal[i] && this.puzzle[i] !== 0) {
-                h++;
-            }
-        }
-        return h;
-    }
-
     calcFScore(): number {
         this.fScore = this.manhattan() + this.level;
+        return this.fScore;
+    }
+
+    calcFScoreGreedy(): number {
+        this.fScore = this.manhattan();
         return this.fScore;
     }
 

@@ -3,7 +3,7 @@ import Board from "../../algorithms/models/Board";
 import Node from "../../algorithms/models/Node";
 import { Result } from "../../algorithms/models/result";
 
-const algoritmos = ["Busca cega - largura", "Busca cega - profundidade", "Busca heurística", "A*"];
+const algoritmos = ["Busca cega - largura", "Busca cega - profundidade", "Busca gulosa", "A*"];
 
 const Main = () => {
 
@@ -55,7 +55,7 @@ const Main = () => {
                     }} name="algoritmos" id="algoritmos" defaultValue={algoritmo} onChange={(e) => setAlgoritmo(e.target.value)}>
                         <option value="0">Busca cega - largura</option>
                         <option value="1">Busca cega - profundidade</option>
-                        <option value="2">Busca heurística</option>
+                        <option value="2">Busca gulosa</option>
                         <option value="3">A*</option>
                     </select>
                     <button style={{
