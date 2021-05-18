@@ -1,9 +1,9 @@
 import Node from "./Node";
 
-export interface Result {
+export default interface Result {
     path: Node[] 
-    custoTempo: number // quantidade de nós visitados
-    custoMemoria: number // quantidade máxima de nós na fronteira
+    custoTempo: number 
+    custoMemoria: number
     nosGerados: number
     profundidade: number
     profundidadeMaxima: number

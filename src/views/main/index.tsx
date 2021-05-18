@@ -6,7 +6,6 @@ const algoritmos = ["Busca cega - largura", "Busca cega - profundidade", "Busca 
 
 const Main = () => {
 
-
     const [solucoes, setSolucoes] = useState<any>([]);
     const [value, setValue] = useState<string>('');
     const [algoritmo, setAlgoritmo] = useState<string>("0");
@@ -19,7 +18,6 @@ const Main = () => {
             return;
         }
 
-        
         setSolucoes([
             ...solucoes,
             {
@@ -54,8 +52,8 @@ const Main = () => {
             </div>
 
             {
-                solucoes.map((solucao: any) => (
-                    <div style={{
+                solucoes.map((solucao: any, index: number) => (
+                    <div key={index} style={{
                         border: '2px solid #ccc',
                         margin: 5,
                         padding: 8
@@ -63,8 +61,8 @@ const Main = () => {
                         <h3>{algoritmos[parseInt(solucao.algoritmo)]} </h3>
                     {
                     solucao?.board.path.length > 0 ?
-                        solucao?.board.path.map((node: Node) => (
-                                <div style={{
+                        solucao?.board.path.map((node: Node, index: number) => (
+                                <div key={index} style={{
                                     border: '2px solid #000',
                                     margin: 5,
                                     display: 'flex',
@@ -104,8 +102,9 @@ const Main = () => {
                                         <span>{node.puzzle[8]}</span>
                                     </div>
                                 </div>
+                                
                         ))
-                        : <h2></h2>
+                        : <h2>Não existe solução!</h2>
                      }
                      <h4>Custo de memória: { solucao.board.custoMemoria }</h4>
                      <h4>Custo de tempo: { solucao.board.custoTempo }</h4>

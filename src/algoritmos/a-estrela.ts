@@ -1,4 +1,4 @@
-import { Result } from './models/result';
+import Result from './models/result';
 import Node from "./models/Node";
 
 const aEstrela = (root: Node): Result => {
@@ -11,7 +11,6 @@ const aEstrela = (root: Node): Result => {
     let nosGerados = 0;
     let profundidade = 0;
     let profundidadeMaxima = 0;
-
     
     root.calcFScore();
     open.push(root);

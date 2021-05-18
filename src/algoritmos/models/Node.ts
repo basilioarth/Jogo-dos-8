@@ -7,8 +7,6 @@ export default class Node {
     goal: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 0];
     fScore!: number;
     level!: number;
-
-    /** quantidade de colunas */
     col: number = 3;
 
     constructor(p: number[], f: number, l: number) {
@@ -95,10 +93,6 @@ export default class Node {
             this.children.push(node);
             node.parent = this;
         }
-    }
-
-    printPuzzle(): void {
-
     }
 
     manhattan(): number {

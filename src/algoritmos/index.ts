@@ -1,7 +1,7 @@
-import { Result } from './models/result';
+import Result from './models/result';
 import Node from './models/Node';
-import { buscaLargura } from './busca-largura';
-import { buscaProfundidade } from './busca-profundidade';
+import buscaLargura from './busca-largura';
+import buscaProfundidade from './busca-profundidade';
 import aEstrela from './a-estrela';
 import heuristicaGulosa from './heuristica-gulosa';
 
@@ -27,7 +27,7 @@ const search = (type: number, initialPuzzle: number[]): Result => {
         case 3:
             return aEstrela(initialNode);
         default:
-            return {path: [], custoMemoria: 0, custoTempo: 0, nosGerados: 0, profundidade: 0, profundidadeMaxima: 0}
+            return { path: [], custoMemoria: 0, custoTempo: 0, nosGerados: 0, profundidade: 0, profundidadeMaxima: 0 }
     }
 };
 
@@ -39,20 +39,13 @@ const temSolucao = (puzzle: number[]) => {
 const getInversoes = (puzzle: number[]) => {
     let inversoes = 0;
 
-        let arr = [];
-        arr.push(puzzle.slice(0, 3));
-        arr.push(puzzle.slice(3, 6));
-        arr.push(puzzle.slice(6, 9));
-
-        for (let i = 0; i < 2; i++) {
-            for (let j = i + 1; j < 3; j++) {
-                if (arr[j][i] > 0 && arr[j][i] > arr[i][j]) {
-                    console.log(arr[j][i], arr[i][j])
-                    inversoes += 1;
-                }
-            }
+    for (var i = 0; i < puzzle.length; i++) {
+        for (var j = i + 1; j < puzzle.length; j++) {
+            if (puzzle[i] > puzzle[j] && puzzle[j] !== 0)
+                inversoes++;
         }
-        return inversoes;
+    }
+    return inversoes;
 }
 
 export default search;

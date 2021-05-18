@@ -1,4 +1,4 @@
-import { Result } from './models/result';
+import Result from './models/result';
 import Node from "./models/Node";
 
 export const buscaProfundidade = (root: Node): Result => {
