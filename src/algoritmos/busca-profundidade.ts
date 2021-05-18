@@ -1,27 +1,29 @@
 import { Result } from './models/result';
 import Node from "./models/Node";
 
-export const buscaLargura = (root: Node): Result => {
+export const buscaProfundidade = (root: Node): Result => {
     let open: Node[] = [];
     let closed: Node[] = [];
     let custoTempo: number = 1;
     let custoMemoria: number = 0;
     let current: Node = root;
+    let limit = 99;
 
     open.push(root);
     let goalFound: boolean = false;
 
-    while(open.length > 0 && !goalFound) {
+    while(open.length > 0 && !goalFound && limit > 0) {
+        limit--;
 
         if(open.length > custoMemoria) custoMemoria = open.length;
 
         custoTempo++;
 
-        current = open[0];
+        current = open[open.length - 1];
         closed.push(current);
-        open.shift();
+        open.pop();
 
-        if (current.isGoal()){
+        if (current.manhattan() === 0){
             goalFound = true;
             break;
         }
@@ -67,4 +69,4 @@ export const buscaLargura = (root: Node): Result => {
     }
 }
 
-export default buscaLargura;
+export default buscaProfundidade;

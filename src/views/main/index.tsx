@@ -1,25 +1,14 @@
-import { useEffect, useState } from "react";
-import Board from "../../algorithms/models/Board";
-import Node from "../../algorithms/models/Node";
-import { Result } from "../../algorithms/models/result";
+import { useState } from "react";
+import search from "../../algoritmos";
+import Node from "../../algoritmos/models/Node";
 
 const algoritmos = ["Busca cega - largura", "Busca cega - profundidade", "Busca gulosa", "A*"];
 
 const Main = () => {
 
-    // let board = new Board([4, 1, 2, 0, 5, 3, 6, 7, 8]);
-    // let board = new Board([0, 7, 2, 1, 4, 3, 6, 8, 5]);
-    // let board = new Board([1, 2, 3, 0, 4, 6, 7, 5, 8]);
-    // let board = new Board([1, 2, 3, 4, 7, 5, 6, 8, 0]);
-    // let board = new Board([0, 1, 2, 4, 5, 3, 6, 7, 8]);
-
-    /**
-     * 4-1-2-0-5-3-6-7-8
-     * 0-1-2-4-5-3-6-7-8
-     */
 
     const [solucoes, setSolucoes] = useState<any>([]);
-    const [value, setValue] = useState<string>('4-1-2-0-5-3-6-7-8');
+    const [value, setValue] = useState<string>('');
     const [algoritmo, setAlgoritmo] = useState<string>("0");
 
     const castInput = () => value?.split('-').map(v => parseInt(v));
@@ -30,19 +19,15 @@ const Main = () => {
             return;
         }
 
-        let board = new Board(castInput());
+        
         setSolucoes([
             ...solucoes,
             {
-                board: board.search(parseInt(algoritmo)),
+                board: search(parseInt(algoritmo), castInput()),
                 algoritmo,
             }
         ]);
     }
-
-    useEffect(() => {
-        // setSolucao(board.search(0) || []);
-    }, [])
 
     return (
         <div>

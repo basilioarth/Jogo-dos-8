@@ -7,7 +7,7 @@ export const heuristicaGulosa = (root: Node): Result => {
     let custoTempo: number = 1;
     let custoMemoria: number = 0;
     let current: Node = root;
-    let limit = 499;
+    let limit = 99;
 
     open.push(root);
     let goalFound: boolean = false;
@@ -23,7 +23,7 @@ export const heuristicaGulosa = (root: Node): Result => {
         closed.push(current);
         open.pop();
 
-        if (current.isGoal()){
+        if (current.manhattan() === 0){
             goalFound = true;
             break;
         }

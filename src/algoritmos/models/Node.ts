@@ -97,10 +97,6 @@ export default class Node {
         }
     }
 
-    isGoal(): boolean {
-        return !(this.puzzle.filter((n, i) => n !== this.goal[i]).length > 0);
-    }
-
     printPuzzle(): void {
 
     }
