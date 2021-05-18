@@ -5,7 +5,7 @@ const aEstrela = (root: Node): Result => {
 
     let open: Node[] = [];
     let closed: Node[] = [];
-    let cur: Node = root;
+    let current: Node = root;
     let custoMemoria = 1;
     let custoTempo = 0;
 
@@ -18,38 +18,38 @@ const aEstrela = (root: Node): Result => {
             break;
         }
 
-        cur = open[0];
+        current = open[0];
 
         custoTempo++;
-        if (cur.manhattan() === 0) {
+        if (current.manhattan() === 0) {
             break;
         }
 
-        cur.expandNode();
+        current.expandNode();
 
-        for (let i = 0; i < cur.children.length; i++) {
+        for (let i = 0; i < current.children.length; i++) {
 
-            cur.children[i].calcFScore();
+            current.children[i].calcFScore();
             let adiciona = true;
 
             for (let j = 0; j < closed.length; j++) {
-                if (closed[j].isEqual(cur.children[i])) {
+                if (closed[j].isEqual(current.children[i])) {
                     adiciona = false;
                     break;
                 }
             }
             for (let j = 0; j < open.length; j++) {
-                if (open[j].isEqual(cur.children[i])) {
+                if (open[j].isEqual(current.children[i])) {
                     adiciona = false;
                     break;
                 }
             }
             if (adiciona) {
-                open.push(cur.children[i]);
+                open.push(current.children[i]);
             }
         }
 
-        closed.push(cur);
+        closed.push(current);
         open.shift();
         if (open.length > custoMemoria) {
             custoMemoria = open.length;
@@ -62,11 +62,11 @@ const aEstrela = (root: Node): Result => {
 
     let path: Node[] = [];
 
-    while (cur.parent != null) {
-        path.push(cur);
-        cur = cur.parent;
+    while (current.parent != null) {
+        path.push(current);
+        current = current.parent;
     }
-    path.push(cur);
+    path.push(current);
 
     path = path.reverse();
 

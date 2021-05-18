@@ -2,61 +2,61 @@ import { Result } from './models/result';
 import Node from "./models/Node";
 
 export const buscaLargura = (root: Node): Result => {
-    let frontier: Node[] = [];
-    let expandedNodes: Node[] = [];
+    let open: Node[] = [];
+    let closed: Node[] = [];
     let custoTempo: number = 1;
     let custoMemoria: number = 0;
-    let currentNode: Node = root;
+    let current: Node = root;
 
-    frontier.push(root);
+    open.push(root);
     let goalFound: boolean = false;
 
-    while(frontier.length > 0 && !goalFound) {
+    while(open.length > 0 && !goalFound) {
 
-        if(frontier.length > custoMemoria) custoMemoria = frontier.length;
+        if(open.length > custoMemoria) custoMemoria = open.length;
 
         custoTempo++;
 
-        currentNode = frontier[0];
-        expandedNodes.push(currentNode);
-        frontier.shift();
+        current = open[0];
+        closed.push(current);
+        open.shift();
 
-        if (currentNode.isGoal()){
+        if (current.isGoal()){
             goalFound = true;
             break;
         }
 
-        currentNode.expandNode();
+        current.expandNode();
 
-        for (let i = 0; i < currentNode.children.length; i++) {
+        for (let i = 0; i < current.children.length; i++) {
 
             let adiciona = true;
 
-            for (let j = 0; j < expandedNodes.length; j++) {
-                if (expandedNodes[j].isEqual(currentNode.children[i])) {
+            for (let j = 0; j < closed.length; j++) {
+                if (closed[j].isEqual(current.children[i])) {
                     adiciona = false;
                     break;
                 }
             }
-            for (let j = 0; j < frontier.length; j++) {
-                if (frontier[j].isEqual(currentNode.children[i])) {
+            for (let j = 0; j < open.length; j++) {
+                if (open[j].isEqual(current.children[i])) {
                     adiciona = false;
                     break;
                 }
             }
             if (adiciona) {
-                frontier.push(currentNode.children[i]);
+                open.push(current.children[i]);
             }
         }
     }
 
     let path: Node[] = [];
 
-    while (currentNode.parent != null) {
-        path.push(currentNode);
-        currentNode = currentNode.parent;
+    while (current.parent != null) {
+        path.push(current);
+        current = current.parent;
     }
-    path.push(currentNode);
+    path.push(current);
 
     path = path.reverse();
 

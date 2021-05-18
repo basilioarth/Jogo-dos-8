@@ -2,68 +2,68 @@ import { Result } from './models/result';
 import Node from "./models/Node";
 
 export const heuristicaGulosa = (root: Node): Result => {
-    let frontier: Node[] = [];
-    let expandedNodes: Node[] = [];
+    let open: Node[] = [];
+    let closed: Node[] = [];
     let custoTempo: number = 1;
     let custoMemoria: number = 0;
-    let currentNode: Node = root;
+    let current: Node = root;
     let limit = 499;
 
-    frontier.push(root);
+    open.push(root);
     let goalFound: boolean = false;
 
-    while(frontier.length > 0 && !goalFound && limit > 0) {
+    while(open.length > 0 && !goalFound && limit > 0) {
         limit--;
 
-        if(frontier.length > custoMemoria) custoMemoria = frontier.length;
+        if(open.length > custoMemoria) custoMemoria = open.length;
 
         custoTempo++;
 
-        currentNode = frontier[frontier.length - 1];
-        expandedNodes.push(currentNode);
-        frontier.pop();
+        current = open[open.length - 1];
+        closed.push(current);
+        open.pop();
 
-        if (currentNode.isGoal()){
+        if (current.isGoal()){
             goalFound = true;
             break;
         }
 
-        currentNode.expandNode();
+        current.expandNode();
 
-        for (let i = 0; i < currentNode.children.length; i++) {
+        for (let i = 0; i < current.children.length; i++) {
 
-            currentNode.children[i].calcFScoreGreedy()
+            current.children[i].calcFScoreGreedy()
             let adiciona = true;
 
-            for (let j = 0; j < expandedNodes.length; j++) {
-                if (expandedNodes[j].isEqual(currentNode.children[i])) {
+            for (let j = 0; j < closed.length; j++) {
+                if (closed[j].isEqual(current.children[i])) {
                     adiciona = false;
                     break;
                 }
             }
-            for (let j = 0; j < frontier.length; j++) {
-                if (frontier[j].isEqual(currentNode.children[i])) {
+            for (let j = 0; j < open.length; j++) {
+                if (open[j].isEqual(current.children[i])) {
                     adiciona = false;
                     break;
                 }
             }
             if (adiciona) {
-                frontier.push(currentNode.children[i]);
+                open.push(current.children[i]);
             }
         }
 
-        frontier.sort((a, b) => {
+        open.sort((a, b) => {
             return a.fScore - b.fScore;
         })
     }
 
     let path: Node[] = [];
 
-    while (currentNode.parent != null) {
-        path.push(currentNode);
-        currentNode = currentNode.parent;
+    while (current.parent != null) {
+        path.push(current);
+        current = current.parent;
     }
-    path.push(currentNode);
+    path.push(current);
 
     path = path.reverse();
 
